@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}Question{% endblock %}
+{% block content %}
+    <h1 align="center">{{ question['title'] }}</h1>
+    <div id="infobox">
+        <div id="date">
+            <em><strong>Submitted at: </strong>{{ question['submission_time'] }}</em>
+        </div>
+        <div id="view_number">
+            <em><strong>View: </strong>{{ question['view_number'] }}</em>
+        </div>
+        <div id="vote_number">
+            <em><strong>Vote: </strong>{{ question['vote_number'] }}</em>
+        </div>
+    </div>
+    <div id="message">
+        {{ question['message'] }}
+    </div>
+    <img src="../{{ question['image'] if question['image'] else '../images/uploaded_images/default.png' }}" width="300">
+{% endblock %}

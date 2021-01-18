@@ -5,13 +5,49 @@
     <title>{% block title %}{% endblock %} - Frost Overflow</title>
     <style>
         body {
-            background-color: #87cefa;
+            background-color: #87CEFA;
+            font-family: Arial;
+        }
+        #message {
+            width: 700px;
+        }
+        #title {
+            width: 200px;
+        }
+        thead {
+            background-color: #61c3ff
+        }
+        table, th, td {
+            border-collapse: collapse;
+        }
+        th, td, tr {
+            padding: 5px;
+        }
+        tr:nth-child(even) {
+            background-color: #61c3ff;
+        }
+        a:link, a:visited {
+            color: #fff;
+            text-decoration: none;
+        }
+        a:hover, a:active {
+            color: #d9d9d9;
+            text-decoration: none;
+        }
+        #infobox {
+            width: 900px;
+            height: 20px;
+        }
+        #date, #view_number, #vote_number {
+            display: inline;
+            width: 300px;
+            float: left;
         }
     </style>
 </head>
 <body>
     <div id="content">{% block content %}{% endblock %}</div>
-    <div id="footer">
+    <div align="center" id="footer">
         &copy; Copyright 2021 by <a href="http://domain.invalid/">Frost Overflow</a>
     </div>
 </body>

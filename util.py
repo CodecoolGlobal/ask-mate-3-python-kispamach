@@ -1,6 +1,14 @@
 import random
 import string
 import data_handler
+from datetime import datetime
+
+
+def date_formatter(database):
+    def modifier(rec):
+        rec['submission_time'] = datetime.utcfromtimestamp(int(rec['submission_time'])).strftime('%Y-%m-%d %H:%M')
+        return rec
+    return map(lambda record: modifier(record), database)
 
 
 def generate_id(start_char,
