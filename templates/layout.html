@@ -8,6 +8,10 @@
             background-color: #87CEFA;
             font-family: Arial;
         }
+        #logo {
+            text-align: center;
+            background-color: #61c3ff;
+        }
         #message {
             width: 700px;
         }
@@ -15,7 +19,7 @@
             width: 200px;
         }
         thead {
-            background-color: #61c3ff
+            background-color: #61c3ff;
         }
         table, th, td {
             border-collapse: collapse;
@@ -35,18 +39,74 @@
             text-decoration: none;
         }
         #infobox {
+            background-color: #95DCFF;
+            padding: 5px;
             width: 900px;
             height: 20px;
+            margin: 50px auto 20px auto;
         }
-        #date, #view_number, #vote_number {
-            display: inline;
-            width: 300px;
-            float: left;
+        #message {
+            box-sizing: border-box;
+            width: 900px;
+            margin: 0 auto;
+            padding: 10px 20px;
+        }
+        #image {
+            text-align: center;
+            margin-top: 30px;
+        }
+        #delete, #date, #view_number, #vote_number {
+            display: inline-block;
+        }
+        #vote_number, #view_number {
+            width: 100px;
+            float: right;
+        }
+        #delete  {
+            float: right;
+        }
+        #footer {
+            position: -webkit-sticky;
+            position: sticky;
+            bottom: 20px;
+            background-color: #61c3ff;
+            padding: 7px 0;
+        }
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        .answer {
+            width: 900px;
+            margin: 0 auto;
+            background-color: #95DCFF;
+            padding: 5px;
+        }
+        .answermessage {
+            box-sizing: border-box;
+            width: 900px;
+            padding: 0 20px;
+            margin-top: 30px;
+        }
+        .leftside {
+            width: 900px;
+        }
+        .answerpic {
+            text-align: center;
+            margin-top: 30px;
+        }
+        #answerinfobox {
+            background-color: #61c3ff;
+            padding: 5px;
+            height: 20px;
         }
     </style>
 </head>
 <body>
+    <div id="logo"><a href="/"><img src="../images/icons/logo.png" width="350"></a></div>
     <div id="content">{% block content %}{% endblock %}</div>
+    <div id="content2">{% block content2 %}{% endblock %}</div>
     <div align="center" id="footer">
         &copy; Copyright 2021 by <a href="http://domain.invalid/">Frost Overflow</a>
     </div>
