@@ -1,6 +1,6 @@
-id,submission_time,view_number,vote_number,title,message,image
-qxU3rC1+,1493368154,29,7,How to make lists in Python?,"I am totally new to this, any hints?",
-qG21!rKm,1493068124,15,19,Wordpress loading multiple jQuery Versions,"I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $('.myBook').booklet();
+id,submission_time,view_number,vote_number,title,message,image
+qxU3rC1+,1493368154,71,8,How to make lists in Python?,"I am totally new to this, any hints?",
+qG21!rKm,1493068124,15,21,Wordpress loading multiple jQuery Versions,"I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $('.myBook').booklet();
 
 I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
 
@@ -8,7 +8,10 @@ BUT in my theme i also using jquery via webpack so the loading order is now foll
 
 jquery
 booklet
-app.js (bundled file with webpack, including jquery)",images/uploaded_images/qG21!rKm.jpg
-qH4es+6R,1493015432,1364,69,Drawing canvas with an image picked with Cordova Camera Plugin,"I'm getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I'm on IOS, it throws errors such as cross origin issue, or that I'm trying to use an unknown format.
+app.js (bundled file with webpack, including jquery)",images/uploaded_images/qG21!rKm.jpg
+qH4es+6R,1493015432,1364,70,Drawing canvas with an image picked with Cordova Camera Plugin,"I'm getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I'm on IOS, it throws errors such as cross origin issue, or that I'm trying to use an unknown format.
 
-This is the code I'm using to draw the image (that works on web/desktop but not cordova built ios app)",
+This is the code I'm using to draw the image (that works on web/desktop but not cordova built ios app)",
+qg2!Y5Cf,1611160435,2,8,Jó lett ?,"Na akkor most jó srácok?
+Holnap cicomázzuk?",images/uploaded_images/qg2Y5Cf.png
+qOf!U1n8,1611161829,1,0,Mi a  manó?,"Tudja valaki, hogy mi a manó?",images/uploaded_images/qOfU1n8.png

@@ -2,49 +2,51 @@
 {% block title %}Listing{% endblock %}
 {% block content %}
 
-  <h1 align="center">Listing Page</h1>
-  <table align="center">
-    <thead>
-      <tr>
-        <th align="left">Id</th>
-        <th align="left">Image</th>
-        <th id="title" align="left">Title
-            <a href="/list?order_by=title&order_direction=asc"><img src="images/icons/asc.png" width="10"></a>
-            <a href="/list?order_by=title&order_direction=desc"><img src="images/icons/desc.png" width="10"></a>
-        </th>
-        <th id="message" align="left">Message</th>
-        <th align="left">Submission Time
-            <a href="/list?order_by=submission_time&order_direction=asc"><img src="images/icons/asc.png" width="10"></a>
-            <a href="/list?order_by=submission_time&order_direction=desc"><img src="images/icons/desc.png" width="10"></a>
-        </th>
-        <th align="left">View
-            <a href="/list?order_by=view_number&order_direction=asc"><img src="images/icons/asc.png" width="10"></a>
-            <a href="/list?order_by=view_number&order_direction=desc"><img src="images/icons/desc.png" width="10"></a>
-        </th>
-        <th align="left">Vote
-            <a href="/list?order_by=vote_number&order_direction=asc"><img src="images/icons/asc.png" width="10"></a>
-            <a href="/list?order_by=vote_number&order_direction=desc"><img src="images/icons/desc.png" width="10"></a>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for record in question_list %}
+
+  <h1 align="center"><a href="/add-question">Add a new question</a></h1>
+  <div style="margin: 0 auto;width: 1335px;border: 1px solid #fff">
+    <table style="border: 5px solid #61c3ff;">
+      <thead>
         <tr>
-            <td>{{ record['id'] }}</td>
-            <td><img src="{{ record['image'] if record['image'] else 'images/uploaded_images/default.png' }}" width="100"></td>
-            <td id="title"><a href="/question/{{ record['id'] }}">{{ record['title'] }}</a></td>
-            <td id="message">{{ record['message'] }}</td>
-            <td>{{ record['submission_time'] }}</td>
-            <td>
-                {{ record['view_number'] }}</td>
-            </td>
-            <td>
-                <a href="/question/{{ record['id'] }}/upvote"><img src="images/icons/upvote.png" width="10"></a>
-                <a href="/question/{{ record['id'] }}/downvote"><img src="images/icons/downvote.png" width="10"></a>
-                {{ record['vote_number'] }}
+          <th align="left">Id</th>
+          <th align="left">Image</th>
+          <th id="title" align="left">Title
+              <a href="/list?order_by=title&order_direction=asc"><img src="images/icons/asc.png" width="10"></a>
+              <a href="/list?order_by=title&order_direction=desc"><img src="images/icons/desc.png" width="10"></a>
+          </th>
+          <th id="message" align="left">Message</th>
+          <th align="left">Submission Time
+              <a href="/list?order_by=submission_time&order_direction=asc"><img src="images/icons/asc.png" width="10"></a>
+              <a href="/list?order_by=submission_time&order_direction=desc"><img src="images/icons/desc.png" width="10"></a>
+          </th>
+          <th align="left">View
+              <a href="/list?order_by=view_number&order_direction=asc"><img src="images/icons/asc.png" width="10"></a>
+              <a href="/list?order_by=view_number&order_direction=desc"><img src="images/icons/desc.png" width="10"></a>
+          </th>
+          <th align="left">Vote
+              <a href="/list?order_by=vote_number&order_direction=asc"><img src="images/icons/asc.png" width="10"></a>
+              <a href="/list?order_by=vote_number&order_direction=desc"><img src="images/icons/desc.png" width="10"></a>
+          </th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <h2 align="center"><a href="/add-question">Add a new question</a></h2>
+      </thead>
+      <tbody>
+        {% for record in question_list %}
+          <tr>
+              <td>{{ record['id'] }}</td>
+              <td height="100"><img src="{{ record['image'] if record['image'] else 'images/uploaded_images/default.png' }}" width="100"></td>
+              <td id="title"><a href="/question/{{ record['id'] }}">{{ record['title'] }}</a></td>
+              <td id="message">{{ record['message'][:280] + '...' if record['message']|length > 280 else record['message'] }}</td>
+              <td>{{ record['submission_time'] }}</td>
+              <td>
+                  {{ record['view_number'] }}</td>
+              </td>
+              <td>
+                  <a href="/question/{{ record['id'] }}/upvote"><img src="images/icons/upvote.png" width="10"></a>
+                  <a href="/question/{{ record['id'] }}/downvote"><img src="images/icons/downvote.png" width="10"></a>
+                  {{ record['vote_number'] }}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}

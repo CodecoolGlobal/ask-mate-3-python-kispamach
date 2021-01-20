@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block title %}Edit your question!{% endblock %}
+{% block content %}
+    <div align="center">
+        <div style="width:380px;margin: 0 auto;" align="left">
+            <h2>Add a new question</h2>
+            <form action="/question/{{ question['id'] }}/edit" method="POST">
+                <p><label for="title">Title:</label><br>
+                <input type="text" id="title" name="title" value="{{ question['title'] }}" required></p>
+                <p><label for="description">Description:</label><br>
+                <textarea name="message" id="description" rows="10" cols="50" required>{{ question['message'] }}</textarea></p>
+                <p><input type="submit" id="submit" value="Submit your question"></p>
+            </form>
+        </div>
+    </div>
+{% endblock %}
