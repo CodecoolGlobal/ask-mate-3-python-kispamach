@@ -2,7 +2,11 @@
 /shelf/
 /workspace.xml
 # Datasource local storage ignored files
+<<<<<<< HEAD
 /dataSources/
+=======
+/../../../../../:\Codecool\html\ask-mate-1-python-haku9104\.idea/dataSources/
+>>>>>>> 1b3ebda4c4eaa358657989ac58cc65ad534f1702
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/

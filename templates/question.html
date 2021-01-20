@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block title %}Question{% endblock %}
+{% block content %}
+
+    <h1 align="center">{{ question['title'] }}</h1>
+    <div id="infobox">
+        <div id="date">
+            <em><strong>Submitted at: </strong>{{ question['submission_time'] }}</em>
+        </div>
+        <div id="vote_number">
+            <em><strong>Vote: </strong>{{ question['vote_number'] }}</em>
+            <a href="/question/{{ question['id'] }}/upvote"><img src="../images/icons/upvote.png" width="10"></a>
+            <a href="/question/{{ question['id'] }}/downvote"><img src="../images/icons/downvote.png" width="10"></a>
+        </div>
+        <div id="view_number">
+            <em><strong>View: </strong>{{ question['view_number'] }}</em>
+        </div>
+    </div>
+    <div id="message">
+        {{ question['message'] }}
+    </div>
+    <div id="image">
+        {% if question['image'] %}
+            <img src="../{{ question['image'] }}" width="600">
+        {%  endif %}
+    </div>
+
+    <h2 align="center">Answers</h2>
+
+    {% for answer in answers %}
+    <div class="answer">
+            <div id="answerinfobox">
+                <div id="date">
+                    <em><strong>Submitted at: </strong>{{ answer['submission_time'] }}</em>
+                </div>
+                <div id="delete">
+                    <a href="/answer/{{ answer['id'] }}/delete"><img src="../images/icons/delete.png" width="20"></a>
+                </div>
+                <div id="vote_number">
+                    <em><strong>Vote: </strong>{{ question['vote_number'] }}</em>
+                    <a href="/question/{{ answer['id'] }}/upvote"><img src="../images/icons/upvote.png" width="10"></a>
+                    <a href="/question/{{ answer['id'] }}/downvote"><img src="../images/icons/downvote.png" width="10"></a>
+                </div>
+            </div>
+            <div class="answermessage">
+                {{ answer['message'] }}
+            </div>
+        <div class="answerpic">
+            {% if answer['image'] %}
+                <img src="../{{ answer['image'] }}" width="300">
+            {%  endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <br> <br> <br> <br> <br>
+
+{% endblock %}
