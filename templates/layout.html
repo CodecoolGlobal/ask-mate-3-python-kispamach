@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="http://127.0.0.1:5000/images/icons/favicon.png">
     <title>{% block title %}{% endblock %} - Frost Overflow</title>
     <style>
         body {
             background-color: #87CEFA;
             font-family: Arial;
+            margin: 0;
         }
         #logo {
             text-align: center;
             background-color: #61c3ff;
-        }
-        #message {
-            width: 700px;
+            padding: 15px;
         }
         #title {
             width: 200px;
@@ -38,14 +38,28 @@
             color: #d9d9d9;
             text-decoration: none;
         }
+        #question_box {
+            background-color: #61c3ff;
+            width: 1000px;
+            margin: 50px auto 22px auto;
+            padding: 5px 5px 25px 5px;
+            border: 2px solid #fff;
+        }
         #infobox {
             background-color: #95DCFF;
             padding: 5px;
-            width: 900px;
+            width: 980px;
             height: 20px;
-            margin: 50px auto 20px auto;
+            margin: 5px auto 20px auto;
+            border: 1px solid #fff;
         }
         #message {
+            box-sizing: border-box;
+            width: 599px;
+            margin: 0 auto;
+            padding: 10px 20px;
+        }
+        #question-message {
             box-sizing: border-box;
             width: 900px;
             margin: 0 auto;
@@ -54,21 +68,25 @@
         #image {
             text-align: center;
             margin-top: 30px;
+           /*max-height: 300px;
+            max-width: 300px;*/
         }
-        #delete, #date, #view_number, #vote_number {
+        #delete, #date, #view_number, #vote_number, #edit {
             display: inline-block;
         }
         #vote_number, #view_number {
             width: 100px;
             float: right;
         }
-        #delete  {
+        #delete, #edit {
             float: right;
+            margin-left: 5px;
         }
         #footer {
-            position: -webkit-sticky;
-            position: sticky;
-            bottom: 20px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
             background-color: #61c3ff;
             padding: 7px 0;
         }
@@ -79,7 +97,7 @@
         }
         .answer {
             width: 900px;
-            margin: 0 auto;
+            margin: 10px auto;
             background-color: #95DCFF;
             padding: 5px;
         }
@@ -101,12 +119,47 @@
             padding: 5px;
             height: 20px;
         }
+        input[type=text], input[type=submit], textarea {
+            border: 1px solid #000;
+            border-radius: 10px;
+            padding: 8px;
+        }
+        input, textarea {
+            margin-top: 5px;
+        }
+        input[type=text] {
+            width: 520px;
+        }
+        .form-container {
+            width: 600px;
+            background-color: #61c3ff;
+            border: 1px solid #fff;
+            margin-top: 100px;
+            border-radius: 5px;
+        }
+        .form-container p {
+            margin-top: 30px;
+        }
+        label {
+            font-weight: bold;
+        }
+        textarea {
+            resize: none;
+        }
+        input[type=submit]:hover {
+            background: #fff;
+        }
+        input[type=submit] {
+            font-weight: bold;
+        }
+        #content {
+            margin-bottom: 80px;
+        }
     </style>
 </head>
 <body>
-    <div id="logo"><a href="/"><img src="../images/icons/logo.png" width="350"></a></div>
+    <div id="logo"><a href="/"><img src="http://127.0.0.1:5000/images/icons/logo_02.png" width="350"></a></div>
     <div id="content">{% block content %}{% endblock %}</div>
-    <div id="content2">{% block content2 %}{% endblock %}</div>
     <div align="center" id="footer">
         &copy; Copyright 2021 by <a href="http://domain.invalid/">Frost Overflow</a>
     </div>

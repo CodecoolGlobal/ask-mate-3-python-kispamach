@@ -2,21 +2,19 @@ import random
 import string
 import data_handler
 from datetime import datetime
+import os
+
+
+def convert_to_date(rec):
+    rec['submission_time'] = datetime.utcfromtimestamp(int(rec['submission_time'])).strftime('%Y-%m-%d %H:%M')
+    return rec
 
 
 def date_formatter(database):
-    def modifier(rec):
-        rec['submission_time'] = datetime.utcfromtimestamp(int(rec['submission_time'])).strftime('%Y-%m-%d %H:%M')
-        return rec
-    return map(lambda record: modifier(record), database)
+    return map(lambda record: convert_to_date(record), database)
 
 
-def generate_id(start_char,
-                number_of_small_letters=4,
-                number_of_capital_letters=2,
-                number_of_digits=2,
-                number_of_special_chars=2,
-                allowed_special_chars=r"_+-!"):
+def generate_id(start_char, allowed_special_chars=r"_+-!"):
     id = (random.choices(string.ascii_lowercase, k=2) +
           random.choices(string.ascii_uppercase, k=2) +
           random.choices(string.digits, k=2) +
@@ -31,3 +29,9 @@ def generate_id(start_char,
         if i['id'] == final_id:
             return generate_id(start_char)
     return final_id
+
+
+def delete_pictures(records):
+    for record in records:
+        if record['image']:
+            os.remove('./' + record['image'])
