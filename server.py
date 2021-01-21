@@ -30,6 +30,7 @@ def question_page(id=None):
     question = util.convert_to_date(question)
     answer_list = data_handler.reader('answer')
     answers = list(filter(lambda record: record["question_id"] == id, answer_list))
+    answers = engine.sort_answers("vote_number", "desc", answers)
     answers = util.date_formatter(answers)
     return render_template("question.html", question=question, answers=answers)
 
@@ -68,7 +69,7 @@ def add_question():
         }
         questions.append(new_question)
         data_handler.writer("q", questions)
-        return redirect("/")
+        return redirect("/question/" + question_id)
     return render_template("add_question.html")
 
 
@@ -156,6 +157,17 @@ def upvote_answer(id=None):
     data_handler.writer('answer', current_file)
     return redirect('/question/' + question_id)
 
+
+@app.route("/picture/<id>")
+def open_up_picture(id):
+    referrer = request.headers.get("Referer")
+    if id[0] == 'a':
+        answer_list = data_handler.reader('answer')
+        picture_list = list(filter(lambda record: record["id"] == id, answer_list))[0]
+        return render_template("image.html", picture_list=picture_list, referrer=referrer)
+    question_list = data_handler.reader("question")
+    picture_list = list(filter(lambda record: record["id"] == id, question_list))[0]
+    return render_template("image.html", picture_list=picture_list, referrer=referrer)
 
 @app.route("/answer/<id>/downvote")
 def downvote_answer(id=None):

@@ -24,7 +24,7 @@ def writer(file, data):
         filename = FILE_OF_QUESTION
         headers = QUESTION_HEADERS
 
-    with open(filename, "w", newline="") as csv_file:
+    with open(filename, "w") as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=headers)
         writer.writeheader()
         for record in data:

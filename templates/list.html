@@ -3,8 +3,8 @@
 {% block content %}
 
 
-  <h1 align="center"><a href="/add-question">Add a new question</a></h1>
-  <div style="margin: 0 auto;width: 1335px;border: 1px solid #fff">
+  <h1 align="center" style="padding-top: 30px;"><a href="/add-question">Add a new question</a></h1>
+  <div style="margin: 0 auto;width: 1356px;border: 1px solid #fff">
     <table style="border: 5px solid #61c3ff;">
       <thead>
         <tr>
@@ -23,7 +23,7 @@
               <a href="/list?order_by=view_number&order_direction=asc"><img src="images/icons/asc.png" width="10"></a>
               <a href="/list?order_by=view_number&order_direction=desc"><img src="images/icons/desc.png" width="10"></a>
           </th>
-          <th align="left">Vote
+          <th align="left" style="width: 85px;">Vote 
               <a href="/list?order_by=vote_number&order_direction=asc"><img src="images/icons/asc.png" width="10"></a>
               <a href="/list?order_by=vote_number&order_direction=desc"><img src="images/icons/desc.png" width="10"></a>
           </th>
@@ -33,7 +33,7 @@
         {% for record in question_list %}
           <tr>
               <td>{{ record['id'] }}</td>
-              <td height="100"><img src="{{ record['image'] if record['image'] else 'images/uploaded_images/default.png' }}" width="100"></td>
+              <td height="100"><img style="max-width: 100px;max-height: 100px;" src="{{ record['image'] if record['image'] else 'images/uploaded_images/default.png' }}"></td>
               <td id="title"><a href="/question/{{ record['id'] }}">{{ record['title'] }}</a></td>
               <td id="message">{{ record['message'][:280] + '...' if record['message']|length > 280 else record['message'] }}</td>
               <td>{{ record['submission_time'] }}</td>

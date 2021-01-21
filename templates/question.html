@@ -24,11 +24,11 @@
             </div>
         </div>
         <div id="question-message">
-            {{ question['message'] }}
+            <div style="font-family: Arial; white-space: pre;">{{ question['message'] }}</div>
         </div>
         <div id="image">
             {% if question['image'] %}
-                <img src="../{{ question['image'] }}" width="600">
+                <a href="/picture/{{ question['id'] }}"><img src="../{{ question['image'] }}" style="max-height: 300px; max-width: 300px;"></a>
             {%  endif %}
         </div>
     </div>
@@ -52,11 +52,11 @@
                 </div>
             </div>
             <div class="answermessage">
-                {{ answer['message'] }}
+                <div style="font-family: Arial; white-space: pre;">{{ answer['message'] }}</div>
             </div>
         <div class="answerpic">
             {% if answer['image'] %}
-                <img src="../{{ answer['image'] }}" width="300">
+                <a href="/picture/{{ answer['id'] }}"><img src="../{{ answer['image'] }}" width="300"></a>
             {%  endif %}
         </div>
     </div>
