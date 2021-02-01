@@ -169,6 +169,7 @@ def open_up_picture(id):
     picture_list = list(filter(lambda record: record["id"] == id, question_list))[0]
     return render_template("image.html", picture_list=picture_list, referrer=referrer)
 
+
 @app.route("/answer/<id>/downvote")
 def downvote_answer(id=None):
     current_file = data_handler.reader('answer')
