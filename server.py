@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from flask import Flask, render_template, request, redirect
 import data_handler
 import util
@@ -185,3 +186,17 @@ if __name__ == "__main__":
         debug=True,
         port=5000,
     )
+=======
+from flask import Flask
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def hello():
+    return "Hello World!"
+
+
+if __name__ == "__main__":
+    app.run()
+>>>>>>> 80d60d3948a4a51a9f9a9f66285bd381b39ca601
