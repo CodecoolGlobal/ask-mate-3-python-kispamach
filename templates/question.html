@@ -14,6 +14,9 @@
             <div id="edit">
                 <a href="/question/{{ question['id'] }}/edit"><img src="../images/icons/edit.png" width="20"></a>
             </div>
+            <div id="comment">
+                <a href="/question/{{ question['id'] }}/new-comment"><img src="../images/icons/comment.png" width="20"></a>
+            </div>
             <div id="vote_number">
                 <em><strong>Vote: </strong>{{ question['vote_number'] }}</em>
                 <a href="/question/{{ question['id'] }}/upvote"><img src="../images/icons/upvote.png" width="10"></a>
@@ -31,6 +34,23 @@
                 <a href="/picture/question/{{ question['id'] }}"><img src="../{{ question['image'] }}" style="max-height: 300px; max-width: 300px;"></a>
             {%  endif %}
         </div>
+
+        {% if q_comments %}
+            <div id="comments">
+                {% for comment in q_comments %}
+                    <div>
+                        <small>{{ comment['submission_time'] }}</small><br>
+                        {% if comment['edited_count'] %}
+                            <small>Edit counter: {{ comment['edited_count'] }}</small>
+                        {% endif %}
+                        <div id="edit">
+                            <a href="/comment/{{ comment['id'] }}/edit"><img src="../images/icons/edit.png" width="20"></a>
+                        </div>
+                        <p>{{ comment['message'] }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {%  endif %}
     </div>
 
     <h2 align="center">Answers</h2>
@@ -44,7 +64,12 @@
                 <div id="delete">
                     <a href="/answer/{{ answer['id'] }}/delete"><img src="../images/icons/delete.png" width="20"></a>
                 </div>
-                
+                <div id="edit">
+                    <a href="/answer/{{ answer['id'] }}/edit"><img src="../images/icons/edit.png" width="20"></a>
+                </div>
+                <div id="comment">
+                    <a href="/answer/{{ answer['id'] }}/new-comment"><img src="../images/icons/comment.png" width="20"></a>
+                </div>
                 <div id="vote_number">
                     <em><strong>Vote: </strong>{{ answer['vote_number'] }}</em>
                     <a href="/answer/{{ answer['id'] }}/upvote"><img src="../images/icons/upvote.png" width="10"></a>
@@ -59,6 +84,22 @@
                 <a href="/picture/answer/{{ answer['id'] }}"><img src="../{{ answer['image'] }}" width="300"></a>
             {%  endif %}
         </div>
+        {% if answer['id'] in a_comments %}
+            <div id="comments">
+                {% for comment in a_comments[answer['id']] %}
+                    <div>
+                        <small>{{ comment['submission_time'] }}</small> <br>
+                        {% if comment['edited_count'] %}
+                            <small>Edit counter: {{ comment['edited_count'] }}</small>
+                        {% endif %}
+                        <div id="edit">
+                            <a href="/comment/{{ comment['id'] }}/edit"><img src="../images/icons/edit.png" width="15"></a>
+                        </div>
+                        <p>{{ comment['message'] }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {%  endif %}
     </div>
     {% endfor %}
     <div style="margin: 40px 0 60px;" id="new_answer" align="center">
@@ -67,7 +108,7 @@
                 <p><textarea name="message" rows="10" cols="100" placeholder="Enter your answer!" required></textarea></p>
                 <p><input type="file" name="picture_upload" accept=".jpg, .png, .jpeg"></p>
                 <p><input type="submit" value="Add answer" name="new_answer"></p>
-            </form> 
+            </form>
         </div>
     </div>
     
