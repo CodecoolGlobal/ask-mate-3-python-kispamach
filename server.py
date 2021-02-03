@@ -92,32 +92,11 @@ def vote(record_type=None, id=None, vote_type=None):
 @app.route("/picture/<picture_type>/<id>")
 def open_up_picture(picture_type, id):
     referrer = request.headers.get("Referer")
-<<<<<<< HEAD
-    if id[0] == 'a':
-        answer_list = data_handler.reader('answer')
-        picture_list = list(filter(lambda record: record["id"] == id, answer_list))[0]
-        return render_template("image.html", picture_list=picture_list, referrer=referrer)
-    question_list = data_handler.reader("question")
-    picture_list = list(filter(lambda record: record["id"] == id, question_list))[0]
-    return render_template("image.html", picture_list=picture_list, referrer=referrer)
-
-
-@app.route("/answer/<id>/downvote")
-def downvote_answer(id=None):
-    current_file = data_handler.reader('answer')
-    question_id = list(filter(lambda record: record["id"] == id, current_file))[0]['question_id']
-    for i in range(len(current_file)):
-        if current_file[i]['id'] == id:
-            current_file[i]['vote_number'] = str(int(current_file[i]['vote_number']) - 1)
-    data_handler.writer('answer', current_file)
-    return redirect('/question/' + question_id)
-=======
     if picture_type == 'answer':
         answer = data_handler.get_one_by_id("answer", id)
         return render_template("image.html", picture_list=answer, referrer=referrer)
     question = data_handler.get_one_by_id("question", id)
     return render_template("image.html", picture_list=question, referrer=referrer)
->>>>>>> development
 
 
 if __name__ == "__main__":
