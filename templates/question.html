@@ -2,7 +2,7 @@
 {% block title %}Question{% endblock %}
 {% block content %}
 
-    <h1 align="center">{{ question['title'] }}</h1>
+    <h1 class="question-title" align="center">{{ question['title'] }}</h1>
     <div id="question_box">
         <div id="infobox">
             <div id="date">
@@ -27,30 +27,52 @@
             </div>
         </div>
         <div id="question-message">
-            <div style="font-family: Arial; white-space: pre;">{{ question['message'] }}</div>
+            <div style="font-family: Arial;">{{ question['message'] | replace("\n", "<br>") | safe }}</div>
         </div>
         <div id="image">
             {% if question['image'] %}
                 <a href="/picture/question/{{ question['id'] }}"><img src="../{{ question['image'] }}" style="max-height: 300px; max-width: 300px;"></a>
-            {%  endif %}
+            {% endif %}
         </div>
-
+        
+        
         {% if q_comments %}
             <div id="comments">
+                <h2 style="margin-left: 100px; margin-bottom: 5px; color: #fff;">Comments</h2>
                 {% for comment in q_comments %}
-                    <div>
-                        <small>{{ comment['submission_time'] }}</small><br>
-                        {% if comment['edited_count'] %}
-                            <small>Edit counter: {{ comment['edited_count'] }}</small>
-                        {% endif %}
-                        <div id="edit">
-                            <a href="/comment/{{ comment['id'] }}/edit"><img src="../images/icons/edit.png" width="20"></a>
+                    <div class="comment">
+                        <div class="comment-infobox">
+                            <small class="submission">{{ comment['submission_time'] }}</small>
+                            {% if comment['edited_count'] %}
+                                <small class="edited-count">(Edited: {{ comment['edited_count'] }} time(s))</small>
+                            {% endif %}
+                            <div class="edit">
+                                <a href="/comment/{{ comment['id'] }}/edit"><img src="../images/icons/edit.png" width="15"></a>
+                            </div>
+                            <div class="delete">
+                                <a href="/comments/{{ comment['id'] }}/delete" onclick="return confirm('Do you want to delete it?');"><img src="../images/icons/comment_delete.png" width="15"></a>
+                            </div>
                         </div>
-                        <p>{{ comment['message'] }}</p>
+                        <div class="comment-message">
+                            {{ comment['message'] | replace("\n", "<br>") | safe }}
+                        </div>
                     </div>
                 {% endfor %}
             </div>
         {%  endif %}
+        
+
+            <div id="tags">
+                {% for tag in tags %}
+                    <div class="tag">
+                    {{ tag['name'] }} <a href="/question/{{ question['id'] }}/tag/{{ tag['id'] }}/delete"><img src="../images/icons/tag_delete.png" width="20"></a>
+                    </div>
+                {% endfor %}
+                <div id="tag_button">
+                    <a href="/question/{{ question['id'] }}/new-tag" > + add tag </a>
+                </div>
+            </div>            
+
     </div>
 
     <h2 align="center">Answers</h2>
@@ -77,25 +99,31 @@
                 </div>
             </div>
             <div class="answermessage">
-                <div style="font-family: Arial; white-space: pre;">{{ answer['message'] }}</div>
+                <div style="font-family: Arial;">{{ answer['message'] | replace("\n", "<br>") | safe }}</div>
             </div>
-        <div class="answerpic">
+        <div class="answerpic" style="margin-bottom: 20px;">
             {% if answer['image'] %}
                 <a href="/picture/answer/{{ answer['id'] }}"><img src="../{{ answer['image'] }}" width="300"></a>
             {%  endif %}
         </div>
         {% if answer['id'] in a_comments %}
             <div id="comments">
+                <h2 style="margin-left: 85px; margin-bottom: 5px; color: #fff;">Comments</h2>
                 {% for comment in a_comments[answer['id']] %}
-                    <div>
-                        <small>{{ comment['submission_time'] }}</small> <br>
-                        {% if comment['edited_count'] %}
-                            <small>Edit counter: {{ comment['edited_count'] }}</small>
-                        {% endif %}
-                        <div id="edit">
-                            <a href="/comment/{{ comment['id'] }}/edit"><img src="../images/icons/edit.png" width="15"></a>
+                    <div class="answer-comment">
+                        <div class="answer-comment-infobox">
+                            <small class="submission">{{ comment['submission_time'] }}</small>
+                            {% if comment['edited_count'] %}
+                                <small class="edited-count">Edit counter: {{ comment['edited_count'] }}</small>
+                            {% endif %}
+                            <div id="edit">
+                                <a href="/comment/{{ comment['id'] }}/edit"><img src="../images/icons/edit.png" width="15"></a>
+                            </div>
+                            <div id="delete">
+                                <a href="/comments/{{ comment['id'] }}/delete" onclick="return confirm('Do you want to delete it?');"><img src="../images/icons/comment_delete.png" width="15"></a>
+                            </div>
                         </div>
-                        <p>{{ comment['message'] }}</p>
+                        <div class="answer-comment-message">{{ comment['message'] | replace("\n", "<br>") | safe }}</div>
                     </div>
                 {% endfor %}
             </div>
