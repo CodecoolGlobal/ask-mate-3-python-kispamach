@@ -4,28 +4,28 @@
 
 
   <h1 align="center" style="padding-top: 30px;"><a href="/add-question">Add a new question</a></h1>
-  <div>
+  <div id="search">
     <form action="/search">
-      <input name="q" placeholder="Search">
-      <input type="submit" value="Submit">
+      <input name="q" placeholder="Want to find something?">
+      <input type="submit" value="Search">
     </form>
   </div>
   <div style="margin: 0 auto;width: 1356px;border: 1px solid #fff">
     <table style="border: 5px solid #61c3ff;">
       <thead>
         <tr>
-          <th align="left">Id</th>
-          <th align="left">Image</th>
-          <th id="title" align="left">Title
+          <th align="left" style="width: 35px;">Id</th>
+          <th align="left" style="width: 100px;">Image</th>
+          <th id="title" style="width: 200px;" align="left">Title
               <a href="/list?order_by=title&order_direction=asc"><img src="images/icons/asc.png" width="10"></a>
               <a href="/list?order_by=title&order_direction=desc"><img src="images/icons/desc.png" width="10"></a>
           </th>
           <th id="message" align="left">Message</th>
-          <th align="left">Submission Time
+          <th align="left" style="width: 180px;">Submission Time
               <a href="/list?order_by=submission_time&order_direction=asc"><img src="images/icons/asc.png" width="10"></a>
               <a href="/list?order_by=submission_time&order_direction=desc"><img src="images/icons/desc.png" width="10"></a>
           </th>
-          <th align="left">View
+          <th align="left" style="width: 85px;">View
               <a href="/list?order_by=view_number&order_direction=asc"><img src="images/icons/asc.png" width="10"></a>
               <a href="/list?order_by=view_number&order_direction=desc"><img src="images/icons/desc.png" width="10"></a>
           </th>
@@ -41,7 +41,19 @@
               <td>{{ record['id'] }}</td>
               <td height="100"><img style="max-width: 100px;max-height: 100px;" src="{{ record['image'] if record['image'] else 'images/uploaded_images/default.png' }}"></td>
               <td id="title"><a href="/question/{{ record['id'] }}">{{ record['title'] }}</a></td>
-              <td id="message">{{ record['message'][:280] + '...' if record['message']|length > 280 else record['message'] }}</td>
+              <td id="message">{{ record['message'][:280]  | safe + '...' if record['message']|length > 280 else record['message'] | safe }}
+              {% if answers_with_sp %}
+              <br><br>
+                {% for answer in answers_with_sp %}
+                  {% if answer['question_id'] == record['id'] %}
+                    <div class="searched_answer">{{ answer['message'][:60] | safe + '...' if answer['message']|length > 60 else answer['message'] | safe }}</div>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+          
+              </td>
+              
+
               <td>{{ record['submission_time'] }}</td>
               <td>
                   {{ record['view_number'] }}</td>
@@ -51,7 +63,7 @@
                   <a href="/question/{{ record['id'] }}/downvote"><img src="images/icons/downvote.png" width="10"></a>
                   {{ record['vote_number'] }}
           </tr>
-        {% endfor %}
+      {% endfor %}
       </tbody>
     </table>
   </div>

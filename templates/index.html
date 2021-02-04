@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block title %}Listing{% endblock %}
+{% block content %}
+
+
+  <h1 align="center" style="padding-top: 30px;"><a href="/add-question">Add a new question</a></h1>
+  <div id="search">
+    <form action="/search">
+      <input name="q" placeholder="Want to find something?">
+      <input type="submit" value="Search">
+    </form>
+  </div>
+  <div style="margin: 0 auto;width: 1356px;border: 1px solid #fff">
+    <table style="border: 5px solid #61c3ff;">
+      <thead>
+        <tr>
+          <th align="left" style="width: 35px;">Id</th>
+          <th align="left" style="width: 100px;">Image</th>
+          <th id="title" style="width: 200px;" align="left">Title</th>
+          <th id="message" align="left">Message</th>
+          <th align="left" style="width: 180px;">Submission Time</th>
+          <th align="left" style="width: 85px;">View</th>
+          <th align="left" style="width: 85px;">Vote</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for record in question_list %}
+          <tr>
+              <td>{{ record['id'] }}</td>
+              <td height="100"><img style="max-width: 100px;max-height: 100px;" src="{{ record['image'] if record['image'] else 'images/uploaded_images/default.png' }}"></td>
+              <td id="title"><a href="/question/{{ record['id'] }}">{{ record['title'] }}</a></td>
+              <td id="message">{{ record['message'][:280] + '...' if record['message']|length > 280 else record['message'] }}</td>
+              <td>{{ record['submission_time'] }}</td>
+              <td>
+                  {{ record['view_number'] }}</td>
+              </td>
+              <td>
+                  <a href="/question/{{ record['id'] }}/upvote"><img src="images/icons/upvote.png" width="10"></a>
+                  <a href="/question/{{ record['id'] }}/downvote"><img src="images/icons/downvote.png" width="10"></a>
+                  {{ record['vote_number'] }}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <h3 align="center"><a href="/list">Show all questions</a></h3>
+{% endblock %}

@@ -1,0 +1,19 @@
+            
+{% extends "layout.html" %}
+{% block title %}Add a tag to the question{% endblock %}
+{% block content %}            
+    <div id="new_tag" style="width: 500px" align="left">
+        <form action="/question/{{id}}/new-tag" method="POST">
+            <p><input type="text" name="tag_name" placeholder="Create new tag"></p>
+            
+            <select name="existing_tag">
+                <option value="" selected></option>
+                {% for tag in existing_tags %}
+                    <option value="{{ tag['name'] }}">{{ tag['name'] }}</option>
+                {% endfor %}
+            </select>
+            
+            <p><input type="submit" value="Add tag"></p>
+        </form>
+    </div>
+{% endblock %}

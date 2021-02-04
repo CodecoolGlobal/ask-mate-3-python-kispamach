@@ -2,7 +2,7 @@
 {% extends "layout.html" %}
 {% block title %}New comment!{% endblock %}
 {% block content %}            
-    <div id="new_comment" style="width: 500px" align="left">
+    <div id="new_comment" style="width: 500px;margin: 50px auto;text-align: center;">
         <form action="/{{record_type}}/{{id}}/new-comment" method="POST">
             <p><textarea name="message" rows="5" cols="60" placeholder="Enter your comment!" required></textarea></p>
             <p><input type="submit" value="Add comment" name="new_comment"></p>

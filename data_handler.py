@@ -91,24 +91,24 @@ def edit_answer(cursor: RealDictCursor, answer_id, message):
 
 @database_connection.connection_handler
 def new_question(cursor: RealDictCursor, form):
-    date = datetime.now()
+    date = datetime.now().strftime("%b %d %Y %H:%M:%S")
     query = f"""
         INSERT INTO question (submission_time, view_number, vote_number, title, message)
-        VALUES ('{date}', 0, 0, '{form['title']}', '{form['message']}')
+        VALUES ('{date}', 0, 0, %(title)s, %(message)s)
     """
-    cursor.execute(query)
+    cursor.execute(query, {"title": form['title'], "message": form['message']})
     cursor.execute('SELECT LASTVAL()')
     return cursor.fetchone()['lastval']
 
 
 @database_connection.connection_handler
 def new_answer(cursor: RealDictCursor, question_id, form):
-    date = datetime.now()
+    date = datetime.now().strftime("%b %d %Y %H:%M:%S")
     query = f"""
         INSERT INTO answer (submission_time, vote_number, question_id, message)
-        VALUES ('{date}', 0, {question_id}, '{form['message']}')
+        VALUES ('{date}', 0, %(question_id)s, %(message)s)
     """
-    cursor.execute(query)
+    cursor.execute(query, {"question_id": question_id, "message": form['message']})
     cursor.execute('SELECT LASTVAL()')
     return cursor.fetchone()['lastval']
 
@@ -145,36 +145,35 @@ def vote(cursor: RealDictCursor, vote, data_table, id):
 
 @database_connection.connection_handler
 def new_comment(cursor: RealDictCursor, message, question_id=None, answer_id=None):
-    date = datetime.now()
+    date = datetime.now().strftime("%b %d %Y %H:%M:%S")
     column = 'question_id' if question_id else 'answer_id'
     id = question_id if question_id else answer_id
     query = f"""
         INSERT INTO comment ({column}, message, submission_time)
-        VALUES ({id}, '{message}', '{date}')
+        VALUES ({id}, %(message)s, '{date}')
     """
-    cursor.execute(query)
-    # cursor.execute('SELECT LASTVAL()')
-    # return cursor.fetchone()['lastval']
+    cursor.execute(query, {"message": message})
 
 
 @database_connection.connection_handler
 def search(cursor: RealDictCursor, search_phrase):
+    search_phrase = f"%{search_phrase}%"
     query = f"""
         SELECT question.id, question.submission_time, question.view_number,
             question.vote_number, question.title, question.message, question.image
         FROM question
         LEFT JOIN answer
         ON question.id = answer.question_id
-        WHERE UPPER(CONCAT(title, question.message, answer.message)) LIKE UPPER('%{search_phrase}%')
+        WHERE UPPER(CONCAT(title, question.message, answer.message)) LIKE UPPER(%(search_phrase)s)
         GROUP BY question.id
         """
-    cursor.execute(query)
+    cursor.execute(query, {"search_phrase": search_phrase})
     return cursor.fetchall()
 
 
 @database_connection.connection_handler
 def increase_comment_edit(cursor: RealDictCursor, comment_id):
-    date = datetime.now()
+    date = datetime.now().strftime("%b %d %Y %H:%M:%S")
     cursor.execute(f"SELECT edited_count FROM comment WHERE id = {comment_id}")
     if cursor.fetchone()['edited_count'] == None:
         query = f"""
@@ -189,3 +188,73 @@ def increase_comment_edit(cursor: RealDictCursor, comment_id):
             WHERE id = {comment_id}
         """
     cursor.execute(query)
+
+
+@database_connection.connection_handler
+def list_tags(cursor: RealDictCursor, question_id):
+    query = f"""
+        SELECT tag.name, tag.id
+        FROM question
+        INNER JOIN question_tag
+        ON id = question_tag.question_id
+        INNER JOIN tag
+        ON question_tag.tag_id = tag.id
+        WHERE question_id = {question_id}
+        """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def add_new_tag(cursor: RealDictCursor, id, new_tag):
+    cursor.execute(f"SELECT name, id FROM tag WHERE name = '{new_tag}'")
+    tag_record = cursor.fetchone()
+    if tag_record is None:
+        query = f"INSERT INTO tag (name) VALUES('{new_tag}')"
+        cursor.execute(query)
+        cursor.execute('SELECT LASTVAL()')
+        last_id = cursor.fetchone()['lastval']
+    else:
+        last_id = tag_record['id']
+    cursor.execute(f"SELECT * FROM question_tag WHERE question_id = {id} AND tag_id = {last_id}")
+    if cursor.fetchone() is None:
+        cursor.execute(f"INSERT INTO question_tag VALUES({id}, {last_id})")
+
+
+@database_connection.connection_handler
+def get_tags(cursor: RealDictCursor):
+    cursor.execute("SELECT * FROM tag")
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def delete_tag(cursor: RealDictCursor, question_id, tag_id):
+    cursor.execute(f"DELETE FROM question_tag WHERE question_id = {question_id} AND tag_id = {tag_id}")
+
+
+@database_connection.connection_handler
+def delete_comment(cursor: RealDictCursor, id):
+    cursor.execute(f"DELETE FROM comment WHERE id = {id}")
+
+
+@database_connection.connection_handler
+def list_five_questions(cursor: RealDictCursor):
+    query = """
+        SELECT *
+        FROM question
+        ORDER BY submission_time DESC
+        LIMIT 5
+        """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_answers_with_sp(cursor: RealDictCursor, search_phrase):
+    query = f"""
+        SELECT message, question_id
+        FROM answer
+        WHERE UPPER(message) LIKE UPPER('%{search_phrase}%')
+        """
+    cursor.execute(query)
+    return cursor.fetchall()
