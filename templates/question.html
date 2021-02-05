@@ -44,7 +44,7 @@
                         <div class="comment-infobox">
                             <small class="submission">{{ comment['submission_time'] }}</small>
                             {% if comment['edited_count'] %}
-                                <small class="edited-count">(Edited: {{ comment['edited_count'] }} time(s))</small>
+                                <small class="edited-count">| Edited {{ comment['edited_count'] }} time(s)</small>
                             {% endif %}
                             <div class="edit">
                                 <a href="/comment/{{ comment['id'] }}/edit"><img src="../images/icons/edit.png" width="15"></a>
@@ -114,7 +114,7 @@
                         <div class="answer-comment-infobox">
                             <small class="submission">{{ comment['submission_time'] }}</small>
                             {% if comment['edited_count'] %}
-                                <small class="edited-count">Edit counter: {{ comment['edited_count'] }}</small>
+                                <small class="edited-count">| Edited {{ comment['edited_count'] }} time(s)</small>
                             {% endif %}
                             <div id="edit">
                                 <a href="/comment/{{ comment['id'] }}/edit"><img src="../images/icons/edit.png" width="15"></a>

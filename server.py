@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect
 import data_handler
 import util
 from werkzeug.utils import secure_filename
-from datetime import datetime
+
 
 app = Flask(__name__, static_folder="images")
 
