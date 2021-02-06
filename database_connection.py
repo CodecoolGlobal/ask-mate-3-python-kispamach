@@ -9,14 +9,14 @@ import urllib
 
 urllib.parse.uses_netloc.append('postgres')
 url = urllib.parse.urlparse(os.environ.get('DATABASE_URL'))
-connection_string = 'postgresql://{user_name}:{password}@{host}/{database_name}'.format(
-            user_name=url.username,
-            password=url.password,
-            host=f"{url.hostname}:{str(url.port)}",
-            database_name=url.path[1:]
-        )
+# connection_string = 'postgresql://{user_name}:{password}@{host}/{database_name}'.format(
+#             user_name=url.username,
+#             password=url.password,
+#             host=f"{url.hostname}:{str(url.port)}",
+#             database_name=url.path[1:]
+#         )
 print()
-print(connection_string)
+# print(connection_string)
 print('******************')
 print(url)
 print('******************')
