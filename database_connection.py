@@ -1,7 +1,6 @@
 # Creates a decorator to handle the database connection/cursor opening/closing.
 # Creates the cursor with RealDictCursor, thus it returns real dictionaries, where the column names are the keys.
 import os
-
 import psycopg2
 import psycopg2.extras
 import urllib
@@ -10,16 +9,11 @@ import urllib
 def get_connection_string():
     # setup connection string
     # to do this, please define these environment variables first
-    # user_name = os.environ.get('PSQL_USER_NAME')
-    # password = os.environ.get('PSQL_PASSWORD')
-    # host = os.environ.get('PSQL_HOST')
-    # database_name = os.environ.get('PSQL_DB_NAME')
-    urllib.parse.uses_netloc.append('postgres')
-    url = urllib.parse.urlparse(os.environ.get('DATABASE_URL'))
-    user_name=url.username,
-    password=url.password,
-    host=f"{url.hostname}:{str(url.port)}",
-    database_name=url.path[1:]
+    user_name = os.environ.get('PSQL_USER_NAME')
+    password = os.environ.get('PSQL_PASSWORD')
+    host = os.environ.get('PSQL_HOST')
+    database_name = os.environ.get('PSQL_DB_NAME')
+
     env_variables_defined = user_name and password and host and database_name
 
     if env_variables_defined:
@@ -36,19 +30,17 @@ def get_connection_string():
 
 def open_database():
     try:
-        # urllib.parse.uses_netloc.append('postgres')
-        # url = urllib.parse.urlparse(os.environ.get('DATABASE_URL'))
-        # print("********* HOST:PORT *********", url.hostname + ":" + str(url.port))
-        # connection = psycopg2.connect(
-        #     database=url.path[1:],
-        #     user=url.username,
-        #     password=url.password,
-        #     host=url.hostname,
-        #     port=url.port
-        # )
-        connection_string = get_connection_string()
-        print(connection_string)
-        connection = psycopg2.connect(connection_string)
+        urllib.parse.uses_netloc.append('postgres')
+        url = urllib.parse.urlparse(os.environ.get('DATABASE_URL'))
+        connection = psycopg2.connect(
+            database=url.path[1:],
+            user=url.username,
+            password=url.password,
+            host=url.hostname,
+            port=url.port
+        )
+        # connection_string = get_connection_string()
+        # connection = psycopg2.connect(connection_string)
         connection.autocommit = True
     except psycopg2.DatabaseError as exception:
         print('Database connection problem')
