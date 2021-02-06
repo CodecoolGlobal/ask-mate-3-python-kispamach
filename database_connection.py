@@ -18,7 +18,7 @@ def get_connection_string():
     url = urllib.parse.urlparse(os.environ.get('DATABASE_URL'))
     user_name=url.username,
     password=url.password,
-    host=url.hostname + ":" + url.port,
+    host=url.hostname + ":" + str(url.port),
     database_name=url.path[1:]
     env_variables_defined = user_name and password and host and database_name
 
