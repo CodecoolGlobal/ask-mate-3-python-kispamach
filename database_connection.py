@@ -7,20 +7,30 @@ import psycopg2.extras
 import urllib
 
 
+urllib.parse.uses_netloc.append('postgres')
+url = urllib.parse.urlparse(os.environ.get('DATABASE_URL'))
+connection_string = 'postgresql://{user_name}:{password}@{host}/{database_name}'.format(
+            user_name=url.username,
+            password=url.password,
+            host=f"{url.hostname}:{str(url.port)}",
+            database_name=url.path[1:]
+        )
+print()
+print(connection_string)
+print('******************')
+print(url)
+print('******************')
+print()
+
+
 def get_connection_string():
     # setup connection string
     # to do this, please define these environment variables first
-    # user_name = os.environ.get('PSQL_USER_NAME')
-    # password = os.environ.get('PSQL_PASSWORD')
-    # host = os.environ.get('PSQL_HOST')
-    # database_name = os.environ.get('PSQL_DB_NAME')
-    urllib.parse.uses_netloc.append('postgres')
-    url = urllib.parse.urlparse(os.environ.get('DATABASE_URL'))
-    user_name=url.username,
-    password=url.password,
-    host=url.hostname,
-    # host=url.hostname + ":" + str(url.port),
-    database_name=url.path[1:]
+    user_name = os.environ.get('PSQL_USER_NAME')
+    password = os.environ.get('PSQL_PASSWORD')
+    host = os.environ.get('PSQL_HOST')
+    database_name = os.environ.get('PSQL_DB_NAME')
+
     env_variables_defined = user_name and password and host and database_name
 
     if env_variables_defined:
@@ -37,7 +47,6 @@ def get_connection_string():
 
 def open_database():
     try:
-        # connection_string = get_connection_string()
         urllib.parse.uses_netloc.append('postgres')
         url = urllib.parse.urlparse(os.environ.get('DATABASE_URL'))
         print("********* HOST:PORT *********", url.hostname + ":" + str(url.port))
@@ -48,6 +57,8 @@ def open_database():
             host=url.hostname,
             port=url.port
         )
+        # connection_string = get_connection_string()
+        # connection = psycopg2.connect(connection_string)
         connection.autocommit = True
     except psycopg2.DatabaseError as exception:
         print('Database connection problem')
