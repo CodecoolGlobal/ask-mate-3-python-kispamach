@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/images/icons/favicon.png">
+    <title>{% block title %}{% endblock %} - Frost Overflow</title>
+    <style>
+        body {
+            background-color: #87CEFA;
+            font-family: Arial;
+            margin: 0;
+        }
+        #logo {
+            text-align: center;
+            background-color: #61c3ff;
+            padding: 15px;
+        }
+        thead {
+            background-color: #61c3ff;
+        }
+        table, th, td {
+            border-collapse: collapse;
+        }
+        th, td, tr {
+            padding: 5px;
+        }
+        tr:nth-child(even) {
+            background-color: #61c3ff;
+        }
+        a:link, a:visited {
+            color: #fff;
+            text-decoration: none;
+        }
+        a:hover, a:active {
+            color: #d9d9d9;
+            text-decoration: none;
+        }
+        #question_box {
+            background-color: #61c3ff;
+            width: 1000px;
+            margin: 0 auto 22px auto;
+            padding: 5px 5px 15px 5px;
+            border: 2px solid #fff;
+        }
+        #infobox {
+            background-color: #95DCFF;
+            padding: 5px;
+            width: 980px;
+            height: 20px;
+            margin: 5px auto 20px auto;
+            border: 1px solid #fff;
+        }
+        #search {
+            width: 1356px;
+            margin: 0 auto;
+            text-align: right;
+            padding: 0px 0px 10px 0px;
+        }
+        #search input {
+            padding: 5px;
+            border-radius: 8px;
+            border: 1px solid #000;
+        }
+        #message {
+            box-sizing: border-box;
+            width: 599px;
+            margin: 0 auto;
+            padding: 10px 20px;
+        }
+        #question-message {
+            box-sizing: border-box;
+            width: 900px;
+            margin: 0 auto;
+            padding: 10px 20px;
+        }
+        #image {
+            text-align: center;
+            margin-top: 30px;
+           /*max-height: 300px;
+            max-width: 300px;*/
+        }
+        #delete, #date, #view_number, #vote_number, #edit, #comment {
+            display: inline-block;
+        }
+        #vote_number, #view_number {
+            width: 100px;
+            float: right;
+        }
+        #delete, #edit, #comment {
+            float: right;
+            margin-left: 5px;
+        }
+        #footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #61c3ff;
+            padding: 7px 0;
+        }
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        .answer {
+            width: 900px;
+            margin: 10px auto;
+            background-color: #95DCFF;
+            padding: 5px;
+        }
+        .answermessage {
+            box-sizing: border-box;
+            width: 900px;
+            padding: 0 20px;
+            margin-top: 30px;
+        }
+        .leftside {
+            width: 900px;
+        }
+        .answerpic {
+            text-align: center;
+            margin-top: 30px;
+        }
+        #answerinfobox {
+            background-color: #61c3ff;
+            padding: 5px;
+            height: 20px;
+        }
+        input[type=text], input[type=submit], textarea {
+            border: 1px solid #000;
+            border-radius: 10px;
+            padding: 8px;
+        }
+        input, textarea {
+            margin-top: 5px;
+        }
+        input[type=text] {
+            width: 520px;
+        }
+        .form-container {
+            width: 600px;
+            background-color: #61c3ff;
+            border: 1px solid #fff;
+            margin-top: 100px;
+            border-radius: 5px;
+        }
+        .form-container p {
+            margin-top: 30px;
+        }
+        label {
+            font-weight: bold;
+        }
+        textarea {
+            resize: none;
+        }
+        input[type=submit]:hover {
+            background: #fff;
+        }
+        input[type=submit] {
+            font-weight: bold;
+        }
+        #content {
+            margin-bottom: 80px;
+        }
+        #tags {
+            padding-left: 15px;
+        }
+        .tag {
+            display: inline-block;
+            border: 1px solid #000;
+            margin-right: 5px;
+            background-color: #b1dbfc;
+            color: #4e7491;
+            border-radius: 12px;
+            padding: 4px 35px 4px 7px;
+            font-weight: bold;
+            position: relative;
+        }
+        #tag_button {
+            display: inline-block;
+            border: 1px solid #000;
+            margin-right: 5px;
+            background-color: #b1dbfc;
+            color: #4e7491;
+            border-radius: 12px;
+            padding: 4px 7px 4px 7px;
+            font-weight: bold;
+            position: relative;
+        }
+        #tag_button a:link, #tag_button a:visited{
+            color: #4e7491;
+        }
+        #tag_button a:hover, #tag_button a:active{
+            color: #3c6280;
+        }
+
+        .tag img {
+            position: absolute;
+            top: 3px;
+            right: 7px;
+        }
+        .comment {
+            background-color: #95DCFF;
+            width: 80%;
+            margin: 0 auto 15px auto;
+            padding: 5px;
+        }
+        .comment-infobox {
+            background-color:  #61c3ff;
+            padding: 5px;
+            height: 15px;
+        }
+        .comment .comment-message {
+            padding: 8px 5px;
+        }
+        .edit, .delete {
+            float: right;
+            margin-left: 5px;
+        }
+        .submission, .edited-count {
+            float: left;
+            margin-right: 5px;
+        }
+        .question-title {
+            margin: 35px;
+        }
+        .answer-comment {
+            background-color: #61c3ff;
+            width: 80%;
+            margin: 0 auto 15px auto;
+            padding: 5px;
+        }
+        .answer-comment-infobox {
+            background-color: #95DCFF;
+            padding: 5px;
+            height: 15px;
+        }
+        .answer-comment .answer-comment-message {
+            padding: 8px 5px;
+        }
+        #new_tag {
+            margin: 50px auto;
+            text-align: center;
+        }
+        #new_tag select {
+            width: 262px;
+            font-size: 18px;
+            border-radius: 8px;
+        }
+        #new_tag input[type=text] {
+            padding: 5px;
+            font-size: 18px;
+            width: 250px;
+        }
+        .searched_answer {
+            background-color: #78d2ff;
+            font-style: italic;
+            font-size: 90%;
+            padding: 5px;
+            width: 90%;
+            margin-left: 10%;
+            margin-top: 5px;
+            border: 1px solid #4a4a4a;
+        }
+    </style>
+</head>
+<body>
+    <div id="logo"><a href="/"><img src="/images/icons/logo_02.png" width="350"></a></div>
+    <div id="content">{% block content %}{% endblock %}</div>
+    <div align="center" id="footer">
+        &copy; Copyright 2021 by <a href="http://domain.invalid/">Frost Overflow</a>
+    </div>
+</body>
+</html>

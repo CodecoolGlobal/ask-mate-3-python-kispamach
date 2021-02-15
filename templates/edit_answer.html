@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}Edit your answer!{% endblock %}
+{% block content %}
+    <div align="center">
+        <div class="form-container">
+            <h2>Edit your answer!</h2>
+            <form style="width:550px;" action="/answer/{{ answer['id'] }}/edit" method="POST">
+                <p><label for="description">Description</label><br>
+                <textarea name="message" id="description" rows="10" cols="70" required>{{ answer['message'] }}</textarea></p>
+                <p><input type="submit" id="submit" value="Submit your answer"></p>
+            </form>
+        </div>
+    </div>
+{% endblock %}
