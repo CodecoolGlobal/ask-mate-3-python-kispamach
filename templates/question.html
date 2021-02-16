@@ -8,6 +8,9 @@
             <div id="date">
                 <em><strong>Submitted at: </strong>{{ question['submission_time'] }}</em>
             </div>
+            <div id="submitted_by">
+                <em><strong>By: </strong>{{ question['email'] }}</em>
+            </div>
             <div id="delete">
                 <a href="/question/{{ question['id'] }}/delete"><img src="../images/icons/delete.png" width="20"></a>
             </div>
@@ -45,6 +48,7 @@
                     <div class="comment">
                         <div class="comment-infobox">
                             <small class="submission">{{ comment['submission_time'] }}</small>
+                            <small>By: </strong>{{ comment['email'] }}</small>
                             {% if comment['edited_count'] %}
                                 <small class="edited-count">| Edited {{ comment['edited_count'] }} time(s)</small>
                             {% endif %}
@@ -85,6 +89,9 @@
                 <div id="date">
                     <em><strong>Submitted at: </strong>{{ answer['submission_time'] }}</em>
                 </div>
+                <div id="submitted_by">
+                    <em><strong>By: </strong>{{ answer['email'] }}</em>
+                </div>
                 <div id="delete">
                     <a href="/answer/{{ answer['id'] }}/delete"><img src="../images/icons/delete.png" width="20"></a>
                 </div>
@@ -117,6 +124,7 @@
                     <div class="answer-comment">
                         <div class="answer-comment-infobox">
                             <small class="submission">{{ comment['submission_time'] }}</small>
+                            <small>By: </strong>{{ comment['email'] }}</small>
                             {% if comment['edited_count'] %}
                                 <small class="edited-count">| Edited {{ comment['edited_count'] }} time(s)</small>
                             {% endif %}

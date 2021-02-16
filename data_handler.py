@@ -20,7 +20,9 @@ def get_one_by_id(cursor: RealDictCursor, data_table, id):
     query = f"""
         SELECT *
         FROM {data_table}
-        WHERE id = {id}
+        JOIN users
+        ON {data_table}.user_id = users.userid
+        WHERE {data_table}.id = {id}
     """
     cursor.execute(query)
     return cursor.fetchone()
@@ -31,7 +33,9 @@ def get_many_by_id(cursor: RealDictCursor, data_table, column_name, id):
     query = f"""
         SELECT *
         FROM {data_table}
-        WHERE {column_name} = {id}
+        JOIN users
+        ON {data_table}.user_id = users.userid
+        WHERE {data_table}.{column_name} = {id}
     """
     cursor.execute(query)
     return cursor.fetchall()
@@ -50,8 +54,18 @@ def increase_view_number(cursor: RealDictCursor, id):
 @database_connection.connection_handler
 def list_answer_for_question(cursor: RealDictCursor, id):
     query = f"""
-        SELECT *
+        SELECT
+            answer.id,
+            answer.submission_time,
+            answer.vote_number,
+            answer.question_id,
+            answer.message,
+            answer.image,
+            answer.user_id,
+            users.email
         FROM answer
+        LEFT JOIN users
+        ON answer.user_id = users.userid
         WHERE question_id = {id}
         ORDER BY vote_number DESC
     """
@@ -104,11 +118,11 @@ def new_question(cursor: RealDictCursor, form, user_id):
 @database_connection.connection_handler
 def new_answer(cursor: RealDictCursor, question_id, form, user_id):
     date = datetime.now().strftime("%b %d %Y %H:%M:%S")
-    query = """
+    query = f"""
         INSERT INTO answer (submission_time, vote_number, question_id, message, user_id)
-        VALUES (%(date)s', 0, %(question_id)s, %(message)s, %(user_id)s)
+        VALUES (%(date)s, 0, %(question_id)s, %(message)s, %(user_id)s)
     """
-    cursor.execute(query, {"question_id": question_id, "message": form['message'], "user_id": user_id, "date": date})
+    cursor.execute(query, {"question_id": int(question_id), "message": form['message'], "user_id": user_id, "date": date})
     cursor.execute('SELECT LASTVAL()')
     return cursor.fetchone()['lastval']
 

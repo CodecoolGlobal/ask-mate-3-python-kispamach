@@ -72,7 +72,7 @@ a:hover, a:active {
    /*max-height: 300px;
     max-width: 300px;*/
 }
-#delete, #date, #view_number, #vote_number, #edit, #comment {
+#delete, #date, #view_number, #vote_number, #edit, #comment, #submitted_by {
     display: inline-block;
 }
 #vote_number, #view_number {
