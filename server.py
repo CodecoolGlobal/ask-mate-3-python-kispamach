@@ -267,9 +267,9 @@ def delete_tag(question_id=None, tag_id=None):
 @app.route("/comments/<comment_id>/delete")
 def delete_comment(comment_id):
     if 'email' in session:
-        email_by_question_id = data_handler.get_one_by_id('question', question_id)['email']
+        email_by_comment_id = data_handler.get_one_by_id('comment', comment_id)['email']
         email = escape(session['email'])
-        if email == email_by_question_id:
+        if email == email_by_comment_id:
             comment_record = data_handler.get_one_by_id("comment", comment_id)
             question_id = comment_record['question_id']
             if comment_record['answer_id']:
