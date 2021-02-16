@@ -102,13 +102,13 @@ def new_question(cursor: RealDictCursor, form, user_id):
 
 
 @database_connection.connection_handler
-def new_answer(cursor: RealDictCursor, question_id, form):
+def new_answer(cursor: RealDictCursor, question_id, form, user_id):
     date = datetime.now().strftime("%b %d %Y %H:%M:%S")
-    query = f"""
-        INSERT INTO answer (submission_time, vote_number, question_id, message)
-        VALUES ('{date}', 0, %(question_id)s, %(message)s)
+    query = """
+        INSERT INTO answer (submission_time, vote_number, question_id, message, user_id)
+        VALUES (%(date)s', 0, %(question_id)s, %(message)s, %(user_id)s)
     """
-    cursor.execute(query, {"question_id": question_id, "message": form['message']})
+    cursor.execute(query, {"question_id": question_id, "message": form['message'], "user_id": user_id, "date": date})
     cursor.execute('SELECT LASTVAL()')
     return cursor.fetchone()['lastval']
 
@@ -144,13 +144,13 @@ def vote(cursor: RealDictCursor, vote, data_table, id):
 
 
 @database_connection.connection_handler
-def new_comment(cursor: RealDictCursor, message, question_id=None, answer_id=None):
+def new_comment(cursor: RealDictCursor, message, user_id, question_id=None, answer_id=None):
     date = datetime.now().strftime("%b %d %Y %H:%M:%S")
     column = 'question_id' if question_id else 'answer_id'
     id = question_id if question_id else answer_id
     query = f"""
-        INSERT INTO comment ({column}, message, submission_time)
-        VALUES ({id}, %(message)s, '{date}')
+        INSERT INTO comment ({column}, message, submission_time, user_id)
+        VALUES ({id}, %(message)s, '{date}', {user_id})
     """
     cursor.execute(query, {"message": message})
 

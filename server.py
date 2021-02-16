@@ -119,7 +119,9 @@ def add_question():
 
 @app.route("/question/<question_id>/new-answer", methods=["GET", "POST"])
 def add_new_answer(question_id=None):
-    answer_id = data_handler.new_answer(question_id, request.form)
+    if 'email' in session:
+        user_id = data_handler.get_record_by_email(session['email'])['id']
+    answer_id = data_handler.new_answer(question_id, request.form, user_id)
     f = request.files['picture_upload']
     pic_name = ""
     if f.filename:
@@ -153,19 +155,23 @@ def delete_question(question_id):
 
 @app.route("/question/<id>/new-comment", methods=["POST", "GET"])
 def new_comment_question(id):
+    if 'email' in session:
+        user_id = data_handler.get_record_by_email(session['email'])['id']
     if request.method == "GET":
         return render_template("new-comment.html", id=id, record_type="question")
     new_comment = request.form['message']
-    data_handler.new_comment(new_comment, question_id=id)
+    data_handler.new_comment(new_comment, user_id, question_id=id)
     return redirect('/question/' + str(id))
 
 
 @app.route("/answer/<id>/new-comment", methods=["POST", "GET"])
 def new_comment_answer(id):
+    if 'email' in session:
+        user_id = data_handler.get_record_by_email(session['email'])['id']
     if request.method == "GET":
         return render_template("new-comment.html", id=id, record_type="answer")
     new_comment = request.form['message']
-    data_handler.new_comment(new_comment, answer_id=id)
+    data_handler.new_comment(new_comment, user_id, answer_id=id)
     answer_record = data_handler.get_one_by_id('answer', id)
     return redirect('/question/' + str(answer_record['question_id']))
 
