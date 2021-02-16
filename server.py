@@ -1,16 +1,22 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session, url_for, flash, escape
 import data_handler
 import util
 from werkzeug.utils import secure_filename
+import password_salter
 
 
 app = Flask(__name__, static_folder="images")
+
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route("/")
 def index_page():
     question_list = data_handler.list_five_questions()
-    return render_template("index.html", question_list=question_list)
+    email = None
+    if 'email' in session:
+        email = escape(session['email'])
+    return render_template("index.html", question_list=question_list, email=email)
 
 
 @app.route("/list")
@@ -18,7 +24,10 @@ def list_page():
     order_by = request.args.get('order_by', default='submission_time')
     order_direction = request.args.get('order_direction', default='DESC').upper()
     question_list = data_handler.list_all_questions(order_by, order_direction)
-    return render_template("list.html", question_list=question_list)
+    email = None
+    if 'email' in session:
+        email = escape(session['email'])
+    return render_template("list.html", question_list=question_list, email=email)
 
 
 @app.route("/search")
@@ -54,7 +63,10 @@ def question_page(id=None):
             comments_for_answer = data_handler.get_many_by_id("comment", "answer_id", answer['id'])
             if len(comments_for_answer) != 0:
                 a_comments[answer['id']] = comments_for_answer
-    return render_template("question.html", question=question, answers=answer_list, q_comments=q_comments, a_comments=a_comments, tags=tags)
+    email = None
+    if 'email' in session:
+        email = escape(session['email'])
+    return render_template("question.html", question=question, answers=answer_list, q_comments=q_comments, a_comments=a_comments, tags=tags, email=email)
 
 
 @app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
@@ -91,8 +103,10 @@ def edit_comment(comment_id):
 
 @app.route("/add-question", methods=["GET", "POST"])
 def add_question():
+    if 'email' in session: 
+        user_id = data_handler.get_record_by_email(session['email'])['id']
     if request.method == "POST":
-        question_id = data_handler.new_question(request.form)
+        question_id = data_handler.new_question(request.form, user_id)
         f = request.files['picture_upload']
         pic_name = ""
         if f.filename:
@@ -200,6 +214,40 @@ def delete_comment(comment_id):
         question_id = data_handler.get_one_by_id("answer", comment_record['answer_id'])['question_id']
     data_handler.delete_comment(comment_id)
     return redirect('/question/' + str(question_id))
+
+
+@app.route("/registration", methods=['GET', 'POST'])
+def sign_up():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = password_salter.hash_password(request.form['password'])
+        data_handler.add_new_user(email, password)
+        return redirect('/')
+    return render_template("registration.html")
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def sign_in():
+    email = request.form['email']
+    password = request.form['password']
+    user_record = data_handler.get_record_by_email(email)
+    referrer = request.headers.get("Referer")
+    if user_record:
+        if password_salter.verify_password(password, user_record['password']):
+            session['email'] = email
+            return redirect(referrer)
+        flash("Incorrect username or password!")
+        return redirect(referrer)
+    else:
+        flash("Username doesn't exists!")
+        return redirect(referrer)
+
+
+@app.route("/logout")
+def sign_out():
+    session.pop("email", None)
+    referrer = request.headers.get("Referer")
+    return redirect(referrer)
 
 
 if __name__ == "__main__":

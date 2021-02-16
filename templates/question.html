@@ -14,9 +14,11 @@
             <div id="edit">
                 <a href="/question/{{ question['id'] }}/edit"><img src="../images/icons/edit.png" width="20"></a>
             </div>
+            {% if email %}
             <div id="comment">
                 <a href="/question/{{ question['id'] }}/new-comment"><img src="../images/icons/comment.png" width="20"></a>
             </div>
+            {% endif %}
             <div id="vote_number">
                 <em><strong>Vote: </strong>{{ question['vote_number'] }}</em>
                 <a href="/question/{{ question['id'] }}/upvote"><img src="../images/icons/upvote.png" width="10"></a>
@@ -89,9 +91,11 @@
                 <div id="edit">
                     <a href="/answer/{{ answer['id'] }}/edit"><img src="../images/icons/edit.png" width="20"></a>
                 </div>
+                {% if email %}
                 <div id="comment">
                     <a href="/answer/{{ answer['id'] }}/new-comment"><img src="../images/icons/comment.png" width="20"></a>
                 </div>
+                {% endif %}
                 <div id="vote_number">
                     <em><strong>Vote: </strong>{{ answer['vote_number'] }}</em>
                     <a href="/answer/{{ answer['id'] }}/upvote"><img src="../images/icons/upvote.png" width="10"></a>
@@ -130,6 +134,7 @@
         {%  endif %}
     </div>
     {% endfor %}
+    {% if email %}
     <div style="margin: 40px 0 60px;" id="new_answer" align="center">
         <div id="new_answer_form" style="width: 740px" align="left">
             <form action="/question/{{ question['id'] }}/new-answer" method="POST" enctype="multipart/form-data">
@@ -139,6 +144,6 @@
             </form>
         </div>
     </div>
-    
+    {% endif %}
 
 {% endblock %}

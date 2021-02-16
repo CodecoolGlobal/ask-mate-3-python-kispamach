@@ -90,13 +90,13 @@ def edit_answer(cursor: RealDictCursor, answer_id, message):
 
 
 @database_connection.connection_handler
-def new_question(cursor: RealDictCursor, form):
+def new_question(cursor: RealDictCursor, form, user_id):
     date = datetime.now().strftime("%b %d %Y %H:%M:%S")
-    query = f"""
-        INSERT INTO question (submission_time, view_number, vote_number, title, message)
-        VALUES ('{date}', 0, 0, %(title)s, %(message)s)
+    query = """
+        INSERT INTO question (submission_time, view_number, vote_number, title, message, user_id)
+        VALUES (%(date)s, 0, 0, %(title)s, %(message)s, %(user_id)s)
     """
-    cursor.execute(query, {"title": form['title'], "message": form['message']})
+    cursor.execute(query, {"title": form['title'], "message": form['message'], "user_id": user_id, "date": date})
     cursor.execute('SELECT LASTVAL()')
     return cursor.fetchone()['lastval']
 
@@ -258,3 +258,31 @@ def get_answers_with_sp(cursor: RealDictCursor, search_phrase):
         """
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def add_new_user(cursor: RealDictCursor, email, password):
+    date = datetime.now().strftime("%b %d %Y %H:%M:%S")
+    query = """
+        INSERT INTO users (email, password, registration_time)
+        VALUES (%(email)s, %(password)s, %(date)s)
+    """
+    data = {
+        'email': email,
+        'password': password,
+        'date': date
+    }
+    cursor.execute(query, data)
+
+
+@database_connection.connection_handler
+def get_record_by_email(cursor: RealDictCursor, email):
+    query = """
+        SELECT * FROM users
+        WHERE email = %(email)s
+    """
+    data = {
+        'email': email
+    }
+    cursor.execute(query, data)
+    return cursor.fetchone()

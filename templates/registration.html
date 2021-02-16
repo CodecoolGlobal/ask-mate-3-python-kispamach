@@ -1,0 +1,12 @@
+            
+{% extends "layout.html" %}
+{% block title %}Add a tag to the question{% endblock %}
+{% block content %}            
+    <div id="registration" style="width: 500px" align="left">
+        <form action="/registration" method="POST">
+            <p><input type="email" name="email" placeholder="Enter your email address" required></p>
+            <p><input type="password" name="password" placeholder="Enter your password" required></p>
+            <p><input type="submit" value="Register"></p>
+        </form>
+    </div>
+{% endblock %}
