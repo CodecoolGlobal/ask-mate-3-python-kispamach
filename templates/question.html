@@ -11,12 +11,14 @@
             <div id="submitted_by">
                 <em><strong>By: </strong>{{ question['email'] }}</em>
             </div>
+            {% if question['email'] == email %}
             <div id="delete">
                 <a href="/question/{{ question['id'] }}/delete"><img src="../images/icons/delete.png" width="20"></a>
             </div>
             <div id="edit">
                 <a href="/question/{{ question['id'] }}/edit"><img src="../images/icons/edit.png" width="20"></a>
             </div>
+            {% endif %}
             {% if email %}
             <div id="comment">
                 <a href="/question/{{ question['id'] }}/new-comment"><img src="../images/icons/comment.png" width="20"></a>
@@ -52,12 +54,14 @@
                             {% if comment['edited_count'] %}
                                 <small class="edited-count">| Edited {{ comment['edited_count'] }} time(s)</small>
                             {% endif %}
+                            {% if email == comment['email'] %}
                             <div class="edit">
                                 <a href="/comment/{{ comment['id'] }}/edit"><img src="../images/icons/edit.png" width="15"></a>
                             </div>
                             <div class="delete">
                                 <a href="/comments/{{ comment['id'] }}/delete" onclick="return confirm('Do you want to delete it?');"><img src="../images/icons/comment_delete.png" width="15"></a>
                             </div>
+                            {% endif %}
                         </div>
                         <div class="comment-message">
                             {{ comment['message'] | replace("\n", "<br>") | safe }}
@@ -92,12 +96,20 @@
                 <div id="submitted_by">
                     <em><strong>By: </strong>{{ answer['email'] }}</em>
                 </div>
+                {% if question['email'] == email %}
+                    <a href="/acceptance/{{ answer['id'] }}/{{ question['id'] }}">{{ 'Not Accept' if answer['is_accepted'] else 'Accept'}}</a>
+                {% endif %}
+                {% if answer['is_accepted'] %}
+                ACCEPTED
+                {% endif %}
+                {% if email == answer['email'] %}
                 <div id="delete">
                     <a href="/answer/{{ answer['id'] }}/delete"><img src="../images/icons/delete.png" width="20"></a>
                 </div>
                 <div id="edit">
                     <a href="/answer/{{ answer['id'] }}/edit"><img src="../images/icons/edit.png" width="20"></a>
                 </div>
+                {% endif %}
                 {% if email %}
                 <div id="comment">
                     <a href="/answer/{{ answer['id'] }}/new-comment"><img src="../images/icons/comment.png" width="20"></a>
@@ -128,12 +140,14 @@
                             {% if comment['edited_count'] %}
                                 <small class="edited-count">| Edited {{ comment['edited_count'] }} time(s)</small>
                             {% endif %}
+                            {% if email == comment['email'] %}
                             <div id="edit">
                                 <a href="/comment/{{ comment['id'] }}/edit"><img src="../images/icons/edit.png" width="15"></a>
                             </div>
                             <div id="delete">
                                 <a href="/comments/{{ comment['id'] }}/delete" onclick="return confirm('Do you want to delete it?');"><img src="../images/icons/comment_delete.png" width="15"></a>
                             </div>
+                            {% endif %}
                         </div>
                         <div class="answer-comment-message">{{ comment['message'] | replace("\n", "<br>") | safe }}</div>
                     </div>

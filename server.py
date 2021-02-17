@@ -163,6 +163,7 @@ def delete_answer(answer_id=None):
         if email == email_by_answer_id:
             answer_record = data_handler.get_one_by_id("answer", answer_id)
             util.delete_pictures([] + [answer_record])
+            data_handler.delete_record("comment", "answer_id", answer_id)
             data_handler.delete_record("answer", "id", answer_id)
             return redirect("/question/" + str(answer_record['question_id']))
     return redirect('/')
@@ -220,6 +221,7 @@ def new_comment_answer(id):
 
 @app.route("/<record_type>/<id>/<vote_type>")
 def vote(record_type=None, id=None, vote_type=None):
+    util.repu_modifier(record_type, id, vote_type)
     data_handler.vote(vote_type, record_type, id)
     referrer = request.headers.get("Referer").split("/")
     if referrer[-2] in ['question', 'answer']:
@@ -306,11 +308,31 @@ def sign_in():
         return redirect(referrer)
 
 
+@app.route('/acceptance/<answer_id>/<question_id>')
+def acceptance(answer_id=None, question_id=None):
+    if 'email' in session:
+        email_by_question_id = data_handler.get_one_by_id('question', question_id)['email']
+        email = escape(session['email'])
+        if email_by_question_id == email:
+            data_handler.accept_answer(answer_id)
+    referrer = request.headers.get("Referer")
+    return redirect(referrer)
+
+
 @app.route("/logout")
 def sign_out():
     session.pop("email", None)
     referrer = request.headers.get("Referer")
     return redirect(referrer)
+
+
+@app.route("/users")
+def list_users():
+    if 'email' in session:
+        email = escape(session['email'])
+        users_data = data_handler.list_users()
+        return render_template("users.html", email=email, users_data=users_data)
+    return redirect('/')
 
 
 if __name__ == "__main__":

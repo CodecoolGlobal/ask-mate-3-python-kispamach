@@ -62,6 +62,7 @@ def list_answer_for_question(cursor: RealDictCursor, id):
             answer.message,
             answer.image,
             answer.user_id,
+            answer.is_accepted,
             users.email
         FROM answer
         LEFT JOIN users
@@ -119,8 +120,8 @@ def new_question(cursor: RealDictCursor, form, user_id):
 def new_answer(cursor: RealDictCursor, question_id, form, user_id):
     date = datetime.now().strftime("%b %d %Y %H:%M:%S")
     query = f"""
-        INSERT INTO answer (submission_time, vote_number, question_id, message, user_id)
-        VALUES (%(date)s, 0, %(question_id)s, %(message)s, %(user_id)s)
+        INSERT INTO answer (submission_time, vote_number, question_id, message, user_id, is_accepted)
+        VALUES (%(date)s, 0, %(question_id)s, %(message)s, %(user_id)s, FALSE)
     """
     cursor.execute(query, {"question_id": int(question_id), "message": form['message'], "user_id": user_id, "date": date})
     cursor.execute('SELECT LASTVAL()')
@@ -278,8 +279,8 @@ def get_answers_with_sp(cursor: RealDictCursor, search_phrase):
 def add_new_user(cursor: RealDictCursor, email, password):
     date = datetime.now().strftime("%b %d %Y %H:%M:%S")
     query = """
-        INSERT INTO users (email, password, registration_time)
-        VALUES (%(email)s, %(password)s, %(date)s)
+        INSERT INTO users (email, password, registration_time, reputation)
+        VALUES (%(email)s, %(password)s, %(date)s, 0)
     """
     data = {
         'email': email,
@@ -300,3 +301,58 @@ def get_record_by_email(cursor: RealDictCursor, email):
     }
     cursor.execute(query, data)
     return cursor.fetchone()
+
+
+@database_connection.connection_handler
+def accept_answer(cursor: RealDictCursor, answer_id):
+    cursor.execute("""
+        UPDATE answer 
+        SET is_accepted = (CASE WHEN is_accepted = TRUE THEN FALSE ELSE TRUE END)
+        WHERE id = %(answer_id)s
+        
+        """, {'answer_id': answer_id})
+    cursor.execute('SELECT is_accepted, user_id FROM answer WHERE id = %(answer_id)s', {"answer_id": answer_id})
+    answer_record = cursor.fetchone()
+    cursor.execute("""
+        UPDATE users
+        SET reputation = (CASE WHEN %(accepted)s = TRUE THEN reputation + 15 ELSE reputation - 15 END)
+        WHERE userid = %(user_id)s
+        
+        """, {'accepted': bool(answer_record['is_accepted']), "user_id": answer_record['user_id']})
+
+@database_connection.connection_handler
+def reputation_modifier(cursor: RealDictCursor, user_id, value):
+    query = """
+        UPDATE users
+        SET reputation = reputation + %(value)s
+        WHERE userid = %(user_id)s
+    """
+    data = {
+        "user_id": user_id,
+        "value": int(value)
+    }
+    cursor.execute(query, data)
+
+
+@database_connection.connection_handler
+def list_users(cursor: RealDictCursor):
+    query = """
+    SELECT
+    users.email AS email,
+    users.registration_time AS regtime,
+    users.reputation AS reputation,
+    COUNT(question.id) AS question_count,
+    COUNT(answer.id) AS answer_count,
+    COUNT(comment.id) AS comment_count
+    FROM users
+    FULL JOIN question
+    ON users.userid = question.user_id
+    FULL JOIN answer
+    ON users.userid = answer.user_id
+    FULL JOIN comment
+    ON users.userid = comment.user_id
+    GROUP BY userid
+    ORDER BY reputation DESC
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
