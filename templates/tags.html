@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}Listing{% endblock %}
+{% block content %}
+
+<div class="user_content">
+  <h2>Tags List</h2>
+  <div style="margin: 0 auto;width: 1356px;border: 1px solid #fff">
+    <table style="border: 5px solid #61c3ff;">
+      <thead>
+        <tr>
+          <th align="left" style="width: 100px;">Tag name</th>
+          <th align="left" style="width: 85px;">Occurrence</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tag in tags %}
+          <tr>
+            <td>{{ tag['name'] }}</td>
+            <td>{{ tag['count'] }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

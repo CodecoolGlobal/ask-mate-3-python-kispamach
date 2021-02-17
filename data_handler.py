@@ -335,9 +335,11 @@ def reputation_modifier(cursor: RealDictCursor, user_id, value):
 
 
 @database_connection.connection_handler
-def list_users(cursor: RealDictCursor):
-    query = """
+def list_users(cursor: RealDictCursor, userid=None):
+    where = f'WHERE userid = {userid}' if userid else ''
+    query = f"""
     SELECT
+    users.userid AS userid,
     users.email AS email,
     users.registration_time AS regtime,
     users.reputation AS reputation,
@@ -351,8 +353,23 @@ def list_users(cursor: RealDictCursor):
     ON users.userid = answer.user_id
     FULL JOIN comment
     ON users.userid = comment.user_id
+    {where}
     GROUP BY userid
     ORDER BY reputation DESC
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_tags(cursor: RealDictCursor):
+    query = """
+        SELECT tag.name AS name, COUNT(question_tag.question_id) AS count
+        FROM question_tag
+        LEFT JOIN tag
+        ON question_tag.tag_id = tag.id
+        GROUP BY tag.name
+        ORDER BY name
     """
     cursor.execute(query)
     return cursor.fetchall()

@@ -17,7 +17,7 @@
       <tbody>
         {% for user in users_data %}
           <tr>
-            <td>{{ user['email'] }}</td>
+            <td><a href="/user/{{ user['userid'] }}">{{ user['email'] }}</a></td>
             <td>{{ user['regtime'] }}</td>
             <td>{{ user['reputation'] }}</td>
             <td>{{ user['question_count'] }}</td>
@@ -28,4 +28,75 @@
       </tbody>
     </table>
   </div>
+  {% if questions %}
+  <div class="user_content">
+    <h2>Asked question by the user</h2>
+    <div style="margin: 0 auto;width: 1356px;border: 1px solid #fff">
+      <table style="border: 5px solid #61c3ff;">
+        <thead>
+          <tr>
+            <th align="left" style="width: 35px;">Title</th>
+            <th align="left" style="width: 100px;">Message</th>
+            <th align="left" style="width: 85px;">Submission time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for question in questions %}
+            <tr>
+              <td><a href="/question/{{ question['id'] }}">{{ question['title'] }}</a></td>
+              <td>{{ question['message'] }}</td>
+              <td>{{ question['submission_time'] }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+  {% if answers %}
+  <div class="user_content">
+    <h2>Answers by the user</h2>
+    <div style="margin: 0 auto;width: 1356px;border: 1px solid #fff">
+      <table style="border: 5px solid #61c3ff;">
+        <thead>
+          <tr>
+            <th align="left" style="width: 100px;">Message</th>
+            <th align="left" style="width: 85px;">Submission time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for answer in answers %}
+            <tr>
+              <td><a href="/question/{{ answer['question_id'] }}">{{ answer['message'] }}</a></td>
+              <td>{{ answer['submission_time'] }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+  {% if comments %}
+  <div class="user_content">
+    <h2>Comments by the user</h2>
+    <div style="margin: 0 auto;width: 1356px;border: 1px solid #fff">
+      <table style="border: 5px solid #61c3ff;">
+        <thead>
+          <tr>
+            <th align="left" style="width: 100px;">Message</th>
+            <th align="left" style="width: 85px;">Submission time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for comment in comments %}
+            <tr>
+              <td><a href="/question/{{ comment['question_id'] }}">{{ comment['message'] }}</a></td>
+              <td>{{ comment['submission_time'] }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
 {% endblock %}

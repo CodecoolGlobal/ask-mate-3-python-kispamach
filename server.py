@@ -223,10 +223,8 @@ def new_comment_answer(id):
 def vote(record_type=None, id=None, vote_type=None):
     util.repu_modifier(record_type, id, vote_type)
     data_handler.vote(vote_type, record_type, id)
-    referrer = request.headers.get("Referer").split("/")
-    if referrer[-2] in ['question', 'answer']:
-        return redirect('/question/' + referrer[-1])
-    return redirect('/list')
+    referrer = request.headers.get("Referer")
+    return redirect(referrer)
 
 
 @app.route("/picture/<picture_type>/<id>")
@@ -300,6 +298,7 @@ def sign_in():
     if user_record:
         if password_salter.verify_password(password, user_record['password']):
             session['email'] = email
+            session['userid'] = user_record['userid']
             return redirect(referrer)
         flash("Incorrect username or password!")
         return redirect(referrer)
@@ -334,6 +333,29 @@ def list_users():
         return render_template("users.html", email=email, users_data=users_data)
     return redirect('/')
 
+
+@app.route("/user/<userid>")
+def user_profile(userid=None):
+    if 'email' in session:
+        email = escape(session['email'])
+        users_data = data_handler.list_users(userid)
+        questions = data_handler.get_many_by_id('question', 'user_id', userid)
+        answers = data_handler.get_many_by_id('answer', 'user_id', userid)
+        comments = data_handler.get_many_by_id('comment', 'user_id', userid)
+        return render_template(
+            "users.html", email=email, 
+            users_data=users_data,
+            questions=questions,
+            answers=answers,
+            comments=comments)
+    return redirect('/')
+
+
+@app.route("/tags")
+def tags():
+    email = escape(session['email'])
+    tags = data_handler.get_tags()
+    return render_template("tags.html", email=email, tags=tags)
 
 if __name__ == "__main__":
     app.run(debug=True)

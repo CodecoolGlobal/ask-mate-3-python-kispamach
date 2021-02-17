@@ -13,7 +13,8 @@
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/registration">Register</a></li>
-            <li><a href="/list">List all questions</a></li>
+            <li><a href="/list">All questions</a></li>
+            <li><a href="/tags">Tags</a></li>
             <li style="float: right;">
                 <form action="/login" method="POST">
                     <input type="email" name="email" placeholder="Email address" required>
@@ -33,10 +34,11 @@
         {% else %}
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/list">List all questions</a></li>
-            <li><a href="/users">List users</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/add-question">Add New Question</a></li>
+            <li><a href="/list">All questions</a></li>
+            <li><a href="/tags">Tags</a></li>
+            <li><a href="/users">Users</a></li>
+            <li><a href="/user/{{ session['userid'] }}">Profile</a></li>
+            <li><a href="/add-question">New question</a></li>
             <li class="logout"><a href="/logout">Sign out</a></li>
             <li class="username">Logged in as {{ email }}</li>
         </ul>
