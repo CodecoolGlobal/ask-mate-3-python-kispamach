@@ -78,9 +78,11 @@
                     {{ tag['name'] }} <a href="/question/{{ question['id'] }}/tag/{{ tag['id'] }}/delete"><img src="../images/icons/tag_delete.png" width="20"></a>
                     </div>
                 {% endfor %}
+                {% if question['email'] == email %}
                 <div id="tag_button">
                     <a href="/question/{{ question['id'] }}/new-tag" > + add tag </a>
                 </div>
+                {% endif %}
             </div>            
 
     </div>
