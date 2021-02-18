@@ -348,7 +348,7 @@ i.fa-user, i.fa-lock {
 }
 
 #registration input[type=submit] {
-    width: 20%;
+    width: 80px;
     margin-left: 40%;
     margin-right: 40%;
     background-color: #0089df;
