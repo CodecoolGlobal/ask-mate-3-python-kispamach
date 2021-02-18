@@ -1,7 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/linux,windows,venv,flask,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=linux,windows,venv,flask,python
 
-
+envvars.sh
 test.py
 
 ### Flask ###
