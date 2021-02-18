@@ -6,7 +6,7 @@
             <h2>Edit your comment!</h2>
             <form style="width:550px;" action="/comment/{{ comment['id'] }}/edit" method="POST">
                 <p><label for="description">Description</label><br>
-                <textarea name="message" id="description" rows="10" cols="70" required>{{ comment['message'] }}</textarea></p>
+                <textarea name="message" id="description" style="width: 95%;height: 120px;" required>{{ comment['message'] }}</textarea></p>
                 <p><input type="submit" id="submit" value="Submit your comment"></p>
             </form>
         </div>

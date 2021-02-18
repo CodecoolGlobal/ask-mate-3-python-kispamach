@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}List Users{% endblock %}
 {% block content %}
-  <h1 style="margin-top: 45px;text-align: center;">Users List</h1>
+  <h1 style="margin-top: 45px;text-align: center;">{{ 'Profile page' if question or answers or comments else 'Users List' }}</h1>
   <div style="margin: 0 auto;width: 833px;border: 1px solid #fff">
     <table style="border: 5px solid #61c3ff;">
       <thead>

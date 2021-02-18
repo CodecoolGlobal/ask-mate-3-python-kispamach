@@ -50,10 +50,10 @@
                     <div class="comment">
                         <div class="comment-infobox">
                             <small class="submission">{{ comment['submission_time'] }}</small>
-                            <small>By: </strong>{{ comment['email'] }}</small>
                             {% if comment['edited_count'] %}
-                                <small class="edited-count">| Edited {{ comment['edited_count'] }} time(s)</small>
+                            <small class="edited-count">| Edited {{ comment['edited_count'] }} time(s)</small>
                             {% endif %}
+                            <small style="float: left;"> | by: </strong>{{ comment['email'] }}</small>
                             {% if email == comment['email'] %}
                             <div class="edit">
                                 <a href="/comment/{{ comment['id'] }}/edit"><img src="../images/icons/edit.png" width="15"></a>
@@ -99,10 +99,10 @@
                     <em><strong>By: </strong>{{ answer['email'] }}</em>
                 </div>
                 {% if question['email'] == email %}
-                    <a href="/acceptance/{{ answer['id'] }}/{{ question['id'] }}">{{ 'Not Accept' if answer['is_accepted'] else 'Accept'}}</a>
+                  <a style="display: inline-block;margin-left: 5px;" href="/acceptance/{{ answer['id'] }}/{{ question['id'] }}">{{ 'Reject' if answer['is_accepted'] else 'Accept'}}</a>
                 {% endif %}
                 {% if answer['is_accepted'] %}
-                ACCEPTED
+                <i class="fa fa-check-square-o"></i>
                 {% endif %}
                 {% if email == answer['email'] %}
                 <div id="delete">
@@ -162,7 +162,7 @@
     <div style="margin: 40px 0 60px;" id="new_answer" align="center">
         <div id="new_answer_form" style="width: 740px" align="left">
             <form action="/question/{{ question['id'] }}/new-answer" method="POST" enctype="multipart/form-data">
-                <p><textarea name="message" rows="10" cols="100" placeholder="Enter your answer!" required></textarea></p>
+                <p><textarea name="message" style="width: 100%;height: 100px;" placeholder="Enter your answer!" required></textarea></p>
                 <p><input type="file" name="picture_upload" accept=".jpg, .png, .jpeg"></p>
                 <p><input type="submit" value="Add answer" name="new_answer"></p>
             </form>

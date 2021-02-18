@@ -346,7 +346,7 @@ def user_profile(userid=None):
         answers = data_handler.get_many_by_id('answer', 'user_id', userid)
         comments = data_handler.get_many_by_id('comment', 'user_id', userid)
         return render_template(
-            "users.html", email=email, 
+            "users.html", email=email,
             users_data=users_data,
             questions=questions,
             answers=answers,

@@ -379,10 +379,31 @@ i.fa-user, i.fa-lock {
     position: relative;
 }
 
+.upload-field {
+    width: 65%;
+    padding: 8px;
+    border: 1px solid #000;
+    background-color: #87CEFA;
+    border-radius: 5px
+}
+
 .login-form i.fa-user, .login-form i.fa-lock {
     font-size: 20px;
     color: #333;
     position: absolute;
     left: 4%;
     top: 35%;
+}
+
+.upload-field input[type=file]::-webkit-file-upload-button {
+    padding: 3px;
+    font-weight: bold;
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+
+#answerinfobox .fa-check-square-o {
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    margin-left: 5px;
 }
