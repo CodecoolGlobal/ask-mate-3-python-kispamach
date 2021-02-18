@@ -281,12 +281,15 @@ def delete_comment(comment_id):
 
 @app.route("/registration", methods=['GET', 'POST'])
 def sign_up():
+    email = None
+    if 'email' in session:
+        return redirect('/')
     if request.method == 'POST':
         email = request.form['email']
         password = password_salter.hash_password(request.form['password'])
         data_handler.add_new_user(email, password)
         return redirect('/')
-    return render_template("registration.html")
+    return render_template("registration.html", email=email)
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -353,7 +356,9 @@ def user_profile(userid=None):
 
 @app.route("/tags")
 def tags():
-    email = escape(session['email'])
+    email = None
+    if 'email' in session:
+        email = escape(session['email'])
     tags = data_handler.get_tags()
     return render_template("tags.html", email=email, tags=tags)
 
