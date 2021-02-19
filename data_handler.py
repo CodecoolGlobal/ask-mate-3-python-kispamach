@@ -343,15 +343,15 @@ def list_users(cursor: RealDictCursor, userid=None):
     users.email AS email,
     users.registration_time AS regtime,
     users.reputation AS reputation,
-    COUNT(question.id) AS question_count,
-    COUNT(answer.id) AS answer_count,
-    COUNT(comment.id) AS comment_count
+    COUNT(DISTINCT question.id) AS question_count,
+    COUNT(DISTINCT answer.id) AS answer_count,
+    COUNT(DISTINCT comment.id) AS comment_count
     FROM users
-    FULL JOIN question
+    LEFT JOIN question
     ON users.userid = question.user_id
-    FULL JOIN answer
+    LEFT JOIN answer
     ON users.userid = answer.user_id
-    FULL JOIN comment
+    LEFT JOIN comment
     ON users.userid = comment.user_id
     {where}
     GROUP BY userid
